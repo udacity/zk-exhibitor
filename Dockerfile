@@ -1,11 +1,11 @@
-FROM debian:7.8
+FROM azul/zulu-openjdk-debian:8
 MAINTAINER Paul Bauer paul@udacity.com
 
 ENV \
     ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
     EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/7ee22268d15a8fbecdf1bb6180503aec2e691d4b/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml" \
     # Append "+" to ensure the package doesn't get purged
-    BUILD_DEPS="curl maven openjdk-7-jdk+" \
+    BUILD_DEPS="curl maven" \
     DEBIAN_FRONTEND="noninteractive"
 
 # Use one step so we can remove intermediate dependencies and minimize size
@@ -15,7 +15,7 @@ RUN \
     && apt-get install -y --allow-unauthenticated --no-install-recommends $BUILD_DEPS \
 
     # Default DNS cache TTL is -1. DNS records, like, change, man.
-    && grep '^networkaddress.cache.ttl=' /etc/java-7-openjdk/security/java.security || echo 'networkaddress.cache.ttl=60' >> /etc/java-7-openjdk/security/java.security \
+    && grep '^networkaddress.cache.ttl=' /usr/lib/jvm/zulu-8-amd64/jre/lib/security/java.security || echo 'networkaddress.cache.ttl=60' >> /usr/lib/jvm/zulu-8-amd64/jre/lib/security/java.security \
 
     # Install ZK
     && curl -Lo /tmp/zookeeper.tgz $ZK_RELEASE \
