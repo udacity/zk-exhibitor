@@ -2,10 +2,10 @@ Runs an [Exhibitor](https://github.com/Netflix/exhibitor)-managed [ZooKeeper](ht
 
 Available on the Docker Index as [mbabineau/zookeeper-exhibitor](https://index.docker.io/u/mbabineau/zookeeper-exhibitor/):
 
-    docker pull mbabineau/zookeeper-exhibitor
+    docker pull udacity/zk-exhibitor:3.4.6_1.5.6
 
 ### Versions
-* Exhibitor 1.5.5
+* Exhibitor 1.5.6
 * ZooKeeper 3.4.6
 
 ### Usage
