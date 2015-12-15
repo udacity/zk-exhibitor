@@ -2,7 +2,7 @@ FROM debian:7.8
 MAINTAINER Paul Bauer paul@udacity.com
 
 ENV \
-    ZK_RELEASE="http://www.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
+    ZK_RELEASE="http://archive.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz" \
     EXHIBITOR_POM="https://raw.githubusercontent.com/Netflix/exhibitor/7ee22268d15a8fbecdf1bb6180503aec2e691d4b/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml" \
     # Append "+" to ensure the package doesn't get purged
     BUILD_DEPS="curl maven openjdk-7-jdk+" \
