@@ -4,7 +4,7 @@ Terraform module for an [Exhibitor](https://github.com/Netflix/exhibitor)-manage
 
 This module bootstraps a HA ZooKeeper cluster. The ZK nodes are managed by Exhibitor with S3 for backups and automatic node discovery.
 
-ZooKeeper and Exhibitor are run via a Docker container. You may use the default ([mbabineau/zookeeper-exhibitor](https://hub.docker.com/r/udacity/zk-exhibitor)) or provide your own image.
+ZooKeeper and Exhibitor are run via a Docker container. You may use the default ([udacity/zk-exhibitor](https://hub.docker.com/r/udacity/zk-exhibitor)) or provide your own image.
 
 The servers are part of an auto-scaling group distributed across AZs. Incrementing, decrementing, or otherwise modifying the server list should be handled gracefully by ZooKeeper (thanks to Exhibitor).
 
