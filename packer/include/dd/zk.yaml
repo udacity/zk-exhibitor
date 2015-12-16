@@ -1,0 +1,5 @@
+init_config: null
+instances:
+-   host: localhost
+    port: 2181
+    timeout: 10

@@ -1,0 +1,7 @@
+init_config:
+    socket_timeout: 100
+instances:
+-   collect_container_size: true
+    collect_images_stats: false
+    new_tag_names: true
+    url: unix://var/run/docker.sock

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+echo 'configure system'
+sudo mv ./limits.conf /etc/security/limits.conf
+sudo mv ./sysctld.network.conf /etc/sysctl.d/60-network.conf
+sudo mv ./pamd.common-session /etc/pam.d/common-session
+sudo mv ./pamd.common-session-noninteractive /etc/pam.d/common-session-noninteractive
+# enable memory and swap cgroup
+sudo perl -p -i -e 's/GRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"/g'  /etc/default/grub
+sudo /usr/sbin/update-grub
+
+echo 'add apt repos'
+echo 'deb https://apt.dockerproject.org/repo ubuntu-trusty main' | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+echo 'deb http://apt.datadoghq.com/ stable main' | sudo tee /etc/apt/sources.list.d/datadog.list
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C7A7DA52
+sudo add-apt-repository -y ppa:webupd8team/java
+
+echo 'install packages'
+sleep 20
+echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
+echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get -y update
+sudo apt-get install -y cloud-guest-utils docker-engine oracle-java8-installer datadog-agent
+
+echo 'setup services'
+# docker
+echo 'DOCKER_OPTS="$DOCKER_OPTS --log-driver=syslog --storage-driver=overlay"' | sudo tee -a /etc/default/docker
+sudo service docker restart
+sleep 5
+
+# zk-exhibitor
+sudo docker pull udacity/zk-exhibitor:${EXHIBITOR_VERSION}
+sudo mv ./zk-exhibitor.conf /etc/init/zk-exhibitor.conf
+echo manual | sudo tee /etc/init/zk-exhibitor.override >/dev/null
+echo manual | sudo tee /etc/init/docker.override >/dev/null
+sudo service docker stop
+
+# datadog
+sudo usermod -a -G docker dd-agent
+sudo mv ./dd/zk.yaml /etc/dd-agent/conf.d/zk.yaml
+sudo mv ./dd/docker_daemon.yaml /etc/dd-agent/conf.d/docker_daemon.yaml
+sudo mv ./dd/datadog.conf /etc/dd-agent/datadog.conf
+sudo service datadog-agent stop
+sudo update-rc.d -f datadog-agent remove
+
+sync

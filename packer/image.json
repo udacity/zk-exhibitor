@@ -1,0 +1,55 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+    "exhibitor_version": "{{env `EXHIBITOR_VERSION` }}",
+    "source_ami": "{{env `SOURCE_AMI`}}",
+    "timestamp": "{{isotime \"20060102150405\"}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "ami_name": "udacity-zk-exhibitor.{{user `exhibitor_version`}}.{{user `timestamp`}}",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "us-west-2",
+      "source_ami": "{{user `source_ami`}}",
+      "ami_virtualization_type": "hvm",
+      "instance_type": "m3.medium",
+      "ssh_username": "ubuntu",
+      "tags": {
+        "owner": "udacity",
+        "application": "zk-exhibitor-host",
+        "version": "{{user `exhibitor_version`}}"
+      },
+      "ami_regions": []
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "./include",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "EXHIBITOR_VERSION={{user `exhibitor_version`}}"
+      ],
+      "inline": [
+        "cd /tmp/include",
+        "sudo chmod 755 init",
+        "./init"
+      ]
+    }
+  ],
+  "post-processors": [{
+    "type": "atlas",
+    "artifact": "udacity/zk-exhibitor-ubuntu-14.04-amd64",
+    "artifact_type": "aws.ami",
+    "metadata": {
+      "created_at": "{{user `timestamp`}}",
+      "version": "{{user `exhibitor_version`}}"
+    }
+  }]
+}
