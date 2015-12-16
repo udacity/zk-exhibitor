@@ -24,7 +24,7 @@ Inbound rules are at your discretion, but you may want to include access to:
 * `2181 [tcp]` - ZooKeeper client port
 * `8181 [tcp]` - Exhibitor HTTP port (for both web UI and REST API)
 
-### 2. Use the module from a terraform tempalte
+### 2. Use the module from a terraform template
 See `terraform/main.tf` for the full list of parameters, descriptions, and default values.
 
 ```bash
