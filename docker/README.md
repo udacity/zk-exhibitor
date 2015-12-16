@@ -1,6 +1,6 @@
 Runs an [Exhibitor](https://github.com/Netflix/exhibitor)-managed [ZooKeeper](http://zookeeper.apache.org/) instance using S3 for backups and automatic node discovery.
 
-Available on the Docker Index as [mbabineau/zookeeper-exhibitor](https://index.docker.io/u/mbabineau/zookeeper-exhibitor/):
+Available on the Docker Index as [udacity/zk-exhibitor](https://hub.docker.com/r/udacity/zk-exhibitor):
 
     docker pull udacity/zk-exhibitor:3.4.6_1.5.6
 
