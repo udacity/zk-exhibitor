@@ -56,6 +56,8 @@ resource "atlas_artifact" "zk-exhibitor-host" {
   metadata {
     version = "${var.host_version}"
   }
+
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_security_group" "client" {
@@ -65,6 +67,8 @@ resource "aws_security_group" "client" {
   tags {
     Name = "${var.cluster_name}-zkex-client-sg}"
   }
+
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_security_group" "load_balancer" {
@@ -87,6 +91,8 @@ resource "aws_security_group" "load_balancer" {
     protocol = "tcp"
     security_groups = ["${aws_security_group.client.id}"]
   }
+
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_security_group" "server" {
@@ -121,12 +127,16 @@ resource "aws_security_group" "server" {
     protocol = "tcp"
     security_groups = ["${aws_security_group.load_balancer.id}"]
   }
+
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_elb" "lb" {
   name = "${var.cluster_name}-lb"
   subnets = ["${split(",", var.subnets)}"]
   security_groups = ["${aws_security_group.load_balancer.id}", "${var.admin_security_group}"]
+  cross_zone_load_balancing = true
+  internal = true
 
   listener {
     lb_port = 80
@@ -147,8 +157,7 @@ resource "aws_elb" "lb" {
     monitoring = "datadog"
   }
 
-  cross_zone_load_balancing = true
-  internal = true
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_iam_role_policy" "access_s3" {
@@ -183,11 +192,14 @@ resource "aws_iam_role" "server" {
   ]
 }
 EOF
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_iam_instance_profile" "server" {
   name = "${var.cluster_name}-iam-instance-profile"
   roles = ["${aws_iam_role.server.name}"]
+
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_launch_configuration" "servers" {
@@ -233,9 +245,7 @@ EOF
     delete_on_termination = true
   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_autoscaling_group" "servers" {
@@ -258,9 +268,8 @@ resource "aws_autoscaling_group" "servers" {
     value = "zookeeper"
     propagate_at_launch = true
   }
-  lifecycle {
-    create_before_destroy = true
-  }
+
+  lifecycle { create_before_destroy = true }
 }
 
 /*** OUTPUTS ***/
