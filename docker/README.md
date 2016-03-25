@@ -2,11 +2,11 @@ Runs an [Exhibitor](https://github.com/Netflix/exhibitor)-managed [ZooKeeper](ht
 
 Available on the Docker Index as [udacity/zk-exhibitor](https://hub.docker.com/r/udacity/zk-exhibitor):
 
-    docker pull udacity/zk-exhibitor:3.4.6_1.5.6
+    docker pull udacity/zk-exhibitor:3.4.8_1.5.6
 
 ### Versions
 * Exhibitor 1.5.6
-* ZooKeeper 3.4.6
+* ZooKeeper 3.4.8
 
 ### Usage
 The container expects the following environment variables to be passed in:

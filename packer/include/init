@@ -21,6 +21,7 @@ echo 'install packages'
 sleep 20
 echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections
 echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
+sudo apt-get -y dist-upgrade
 sudo apt-get -y update
 sudo apt-get install -y cloud-guest-utils docker-engine oracle-java8-installer datadog-agent
 

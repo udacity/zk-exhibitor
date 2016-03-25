@@ -27,11 +27,11 @@ variable "host_artifact" {
 }
 variable "host_version" {
   description = "version metadata for atlas artifact (e.g. udacity/zk-exhibitor-ubuntu-14.04-amd64)"
-  default = "3.4.6_1.5.6"
+  default = "3.4.8_1.5.6"
 }
 variable "zk_exhibitor_docker_image" {
   description = "ZK+Exhibitor Docker image (format: [<registry>[:<port>]/]<repository>:<version>)"
-  default = "udacity/zk-exhibitor:3.4.6_1.5.6"
+  default = "udacity/zk-exhibitor:3.4.8_1.5.6"
 }
 variable "instance_type" {
   description = "ec2 instance type"
