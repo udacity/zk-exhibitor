@@ -15,6 +15,7 @@
       "region": "us-west-2",
       "source_ami": "{{user `source_ami`}}",
       "ami_virtualization_type": "hvm",
+      "ami_groups": "all",
       "instance_type": "m3.medium",
       "ssh_username": "ubuntu",
       "tags": {
