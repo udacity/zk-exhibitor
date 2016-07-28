@@ -1,7 +1,6 @@
 EXHIBITOR_VERSION = 3.4.8_1.5.6
-# http://cloud-images.ubuntu.com/trusty/current/hwe-v/ : us-west-2,64,hvm-ssd @ 20160325
-# ubuntu/images-testing/hvm-ssd/ubuntu-trusty-daily-amd64-server-hwe-v-20160323
-SOURCE_AMI := ami-1951b979
+# ubuntu/images-testing/hvm-ssd/ubuntu-trusty-daily-amd64-server-hwe-v-20160623
+SOURCE_AMI := ami-fbf3349b
 
 WORK_DIR = $(shell pwd)
 export
